@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>software.amazon.smithy.plugin</id>
+    <name>Smithy</name>
+    <vendor>Amazon</vendor>
+
+    <!-- Product and plugin compatibility requirements -->
+    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="software.amazon.smithy.plugin.services.MyApplicationService"/>
+        <projectService serviceImplementation="software.amazon.smithy.plugin.services.MyProjectService"/>
+        <preloadingActivity implementation="software.amazon.smithy.plugin.SmithyPreloadingActivity"
+                            id="software.amazon.smithy.plugin.SmithyPreloadingActivity"/>
+        <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
+                                id="LSPCompletionContributor" language="any"/>
+    </extensions>
+
+    <applicationListeners>
+        <listener class="software.amazon.smithy.plugin.listeners.MyProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+
+    <application-components>
+        <component>
+            <implementation-class>org.wso2.lsp4intellij.IntellijLanguageClient</implementation-class>
+        </component>
+    </application-components>
+</idea-plugin>
