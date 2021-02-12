@@ -17,7 +17,6 @@ package software.amazon.smithy.plugin;
 
 import com.intellij.AbstractBundle;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
 
 public final class MyBundle extends AbstractBundle {
