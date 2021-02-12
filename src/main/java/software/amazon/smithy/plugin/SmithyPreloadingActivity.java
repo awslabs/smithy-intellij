@@ -25,7 +25,7 @@ public class SmithyPreloadingActivity extends PreloadingActivity {
     public void preload(@NotNull ProgressIndicator indicator) {
         String lspPath = System.getProperty("user.home") + "/.m2/repository/software/amazon/smithy/"
                 + "smithy-language-server/0.0.0/smithy-language-server-0.0.0-all.jar";
-        String[] command = new String[]{"java", "-jar", lspPath};
+        String[] command = new String[]{"java", "-jar", lspPath, "0"};
         SmithyLanguageServerDefinition smithyLanguageServerDefinition = new SmithyLanguageServerDefinition("smithy",
                 command);
         IntellijLanguageClient.addServerDefinition(smithyLanguageServerDefinition);
