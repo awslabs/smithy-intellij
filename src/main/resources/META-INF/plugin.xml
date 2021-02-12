@@ -16,6 +16,7 @@
                   fieldName="INSTANCE" language="Smithy" extensions="smithy"/>
         <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
                                 id="LSPCompletionContributor" language="any"/>
+        <externalAnnotator id="LSPAnnotator" language="Smithy" implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
     </extensions>
 
     <applicationListeners>
