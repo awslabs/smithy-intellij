@@ -9,6 +9,7 @@ plugins {
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "0.6.2"
     id("checkstyle")
+    id("com.github.spotbugs") version "4.6.0"
 }
 
 // Import variables from gradle.properties file
@@ -60,6 +61,16 @@ intellij {
  */
 
 tasks["checkstyleTest"].enabled = false
+
+/*
+ * Spotbugs
+ * ====================================================
+ *
+ * Run spotbugs against source files and configure suppressions.
+ */
+
+// We don't need to lint tests.
+tasks["spotbugsTest"].enabled = false
 
 tasks {
     // Set the compatibility versions to 1.8

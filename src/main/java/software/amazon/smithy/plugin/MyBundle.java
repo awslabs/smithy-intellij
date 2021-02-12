@@ -28,7 +28,6 @@ public final class MyBundle extends AbstractBundle {
         super(BUNDLE);
     }
 
-    @NotNull
     public static String message(@PropertyKey(resourceBundle = BUNDLE) String key, Object... params) {
         return INSTANCE.getMessage(key, params);
     }
