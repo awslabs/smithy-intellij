@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.intellij") version "0.6.5"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "0.6.2"
+    id("checkstyle")
 }
 
 // Import variables from gradle.properties file
@@ -50,6 +51,15 @@ intellij {
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     setPlugins(*platformPlugins.split(',').map(String::trim).filter(String::isNotEmpty).toTypedArray())
 }
+
+/*
+ * CheckStyle
+ * ====================================================
+ *
+ * Apply CheckStyle to source files but not tests.
+ */
+
+tasks["checkstyleTest"].enabled = false
 
 tasks {
     // Set the compatibility versions to 1.8
