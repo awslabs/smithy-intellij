@@ -12,6 +12,8 @@
         <projectService serviceImplementation="software.amazon.smithy.plugin.services.MyProjectService"/>
         <preloadingActivity implementation="software.amazon.smithy.plugin.SmithyPreloadingActivity"
                             id="software.amazon.smithy.plugin.SmithyPreloadingActivity"/>
+        <fileType name="Smithy File" implementationClass="software.amazon.smithy.plugin.SmithyFileType"
+                  fieldName="INSTANCE" language="Smithy" extensions="smithy"/>
         <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
                                 id="LSPCompletionContributor" language="any"/>
     </extensions>
