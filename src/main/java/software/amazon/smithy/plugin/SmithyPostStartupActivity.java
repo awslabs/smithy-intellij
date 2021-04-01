@@ -15,14 +15,15 @@
 
 package software.amazon.smithy.plugin;
 
-import com.intellij.openapi.application.PreloadingActivity;
-import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupActivity;
 import org.jetbrains.annotations.NotNull;
 import org.wso2.lsp4intellij.IntellijLanguageClient;
 
-public class SmithyPreloadingActivity extends PreloadingActivity {
+public class SmithyPostStartupActivity implements StartupActivity {
+
     @Override
-    public void preload(@NotNull ProgressIndicator indicator) {
+    public void runActivity(@NotNull Project project) {
         String lspPath = System.getProperty("user.home") + "/.m2/repository/software/amazon/smithy/"
                 + "smithy-language-server/0.0.0/smithy-language-server-0.0.0-all.jar";
         String[] command = new String[]{"java", "-jar", lspPath, "0"};
