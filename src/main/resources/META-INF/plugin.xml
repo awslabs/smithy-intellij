@@ -10,8 +10,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="software.amazon.smithy.plugin.services.MyApplicationService"/>
         <projectService serviceImplementation="software.amazon.smithy.plugin.services.MyProjectService"/>
-        <preloadingActivity implementation="software.amazon.smithy.plugin.SmithyPreloadingActivity"
-                            id="software.amazon.smithy.plugin.SmithyPreloadingActivity"/>
+        <postStartupActivity implementation="software.amazon.smithy.plugin.SmithyPostStartupActivity"
+                             id="software.amazon.smithy.plugin.SmithyPostStartupActivity"/>
         <fileType name="Smithy File" implementationClass="software.amazon.smithy.plugin.SmithyFileType"
                   fieldName="INSTANCE" language="Smithy" extensions="smithy"/>
         <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
