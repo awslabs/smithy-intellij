@@ -38,6 +38,7 @@ repositories {
 }
 dependencies {
     implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
+    implementation("software.amazon.smithy:smithy-model:[1.0, 2.0[")
 }
 
 // Configure gradle-intellij-plugin plugin.
