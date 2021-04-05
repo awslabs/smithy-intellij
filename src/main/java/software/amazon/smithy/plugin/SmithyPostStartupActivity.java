@@ -57,8 +57,11 @@ public class SmithyPostStartupActivity implements StartupActivity {
     // Extracts coursier cli from plugin jar, copying it to build directory.
     private void bootstrapCoursier(Project project) {
         File dir = new File(project.getBasePath() + CS_DIR);
-        if (!dir.isDirectory()) {
-            dir.mkdir();
+        if (!dir.exists()) {
+            boolean created = dir.mkdir();
+            if (!created) {
+                throw new RuntimeException("Could not make directory for coursier: " + project.getBasePath() + CS_DIR);
+            }
         }
 
         String bin = project.getBasePath() + CS_BIN;
