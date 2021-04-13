@@ -1,5 +1,7 @@
 ## Smithy IntelliJ
 
+**WARNING: This repository in development. All interfaces are subject to change.**
+
 <!-- Plugin description -->
 **Smithy IntelliJ** provides IDE integration for the [Smithy IDL](https://awslabs.github.io/smithy/) within
 IntelliJ IDEA.  It utilizes [smithy-language-server](https://github.com/awslabs/smithy-language-server) for its
