@@ -30,12 +30,19 @@ import org.wso2.lsp4intellij.IntellijLanguageClient;
 import software.amazon.smithy.model.node.Node;
 import software.amazon.smithy.model.node.NodeMapper;
 import software.amazon.smithy.utils.IoUtils;
+import software.amazon.smithy.utils.ListUtils;
 
+/**
+ * After IntelliJ is started and the user's workspace has been setup, this
+ * activity sets up the Coursier CLI. Coursier is then used to fetch the model
+ * dependencies, and start the language server injecting those
+ * dependencies.
+ */
 public class SmithyPostStartupActivity implements StartupActivity {
-    private static final String CS_DIR = "/build/coursier";
-    private static final String CS_BIN = CS_DIR + "/cs";
-    private static final String CS_CACHE = CS_DIR + "/cache";
-    private static final String CS_JAR = "/bin/coursier";
+    private static final String COURSIER_DIR = "/build/coursier";
+    private static final String COURSIER_BIN = COURSIER_DIR + "/cs";
+    private static final String COURSIER_CACHE = COURSIER_DIR + "/cache";
+    private static final String COURSIER_JAR = "/bin/coursier";
     private static final List<String> DEPENDENCY_LOCATIONS = Arrays.asList(
             "/build/smithy-dependencies.json",
             "/.smithy.json"
@@ -45,43 +52,48 @@ public class SmithyPostStartupActivity implements StartupActivity {
     @Override
     public void runActivity(@NotNull Project project) {
         bootstrapCoursier(project);
-        cacheLanguageServer(project);
+        // Cache language server and its dependencies.
+        fetchDependencies(project, ListUtils.of("m2Local"), ListUtils.of(LANGUAGE_SERVER_ARTIFACT));
         ModelDependencies dependencies = getDependencies(project);
-        cacheDependencies(dependencies, project);
+        // Cache user's model dependencies.
+        fetchDependencies(project, dependencies.getRepositories(), dependencies.getArtifacts());
         String[] serverCommand = buildServerCommand(dependencies.getArtifacts(), project);
         SmithyLanguageServerDefinition smithyLanguageServerDefinition = new SmithyLanguageServerDefinition("smithy",
                 serverCommand);
         IntellijLanguageClient.addServerDefinition(smithyLanguageServerDefinition);
     }
 
-    // Extracts coursier cli from plugin jar, copying it to build directory.
+    // Extracts Coursier cli from plugin jar, copying it to the build directory. See Coursier's JAR-based launcher
+    // docs: https://get-coursier.io/docs/cli-installation.html#jar-based-launcher for details on its use as an
+    // embedded dependency.
     private void bootstrapCoursier(Project project) {
-        File dir = new File(project.getBasePath() + CS_DIR);
+        File dir = new File(project.getBasePath() + COURSIER_DIR);
         if (!dir.exists()) {
             boolean created = dir.mkdir();
             if (!created) {
-                throw new RuntimeException("Could not make directory for coursier: " + project.getBasePath() + CS_DIR);
+                throw new RuntimeException("Could not make directory for Coursier: " + project.getBasePath()
+                        + COURSIER_DIR);
             }
         }
 
-        String bin = project.getBasePath() + CS_BIN;
-        // If coursier cli has already been setup and can be executed, return early.
+        String bin = project.getBasePath() + COURSIER_BIN;
+        // If Coursier cli has already been setup and can be executed, return early.
         File existingCoursier = new File(bin);
         if (existingCoursier.exists() && existingCoursier.canExecute()) {
             return;
         }
 
-        // Copy coursier cli from jar to temporary location, setting it as executable.
-        try {
-            InputStream inputStream = getClass().getResource(CS_JAR).openStream();
-            OutputStream outputStream = new FileOutputStream(bin);
+        // Copy Coursier cli from jar to temporary location, setting it as executable.
+        try (
+                InputStream inputStream = getClass().getResource(COURSIER_JAR).openStream();
+                OutputStream outputStream = new FileOutputStream(bin);
+        ) {
             byte[] b = new byte[2048];
             int length;
 
             while ((length = inputStream.read(b)) != -1) {
                 outputStream.write(b, 0, length);
             }
-
             inputStream.close();
             outputStream.close();
             File coursier = new File(bin);
@@ -99,53 +111,6 @@ public class SmithyPostStartupActivity implements StartupActivity {
         return mapper.deserialize(node, ModelDependencies.class);
     }
 
-    // Use coursier to cache user's model dependencies.
-    private void cacheDependencies(ModelDependencies dependencies, Project project) {
-        List<String> commandParts = new ArrayList<>(Arrays.asList(project.getBasePath() + CS_BIN,
-                "fetch", "--cache", project.getBasePath() + CS_CACHE));
-        for (String repository : dependencies.getRepositories()) {
-            commandParts.add("-r");
-            commandParts.add(repository);
-        }
-        commandParts.addAll(dependencies.getArtifacts());
-        runCommand(commandParts);
-    }
-
-    // Use coursier to cache language server and its dependencies.
-    private void cacheLanguageServer(Project project) {
-        List<String> commandParts = new ArrayList<>(Arrays.asList(project.getBasePath() + CS_BIN, "fetch",
-                "--cache", project.getBasePath() + CS_CACHE, "-r", "m2Local", LANGUAGE_SERVER_ARTIFACT));
-        runCommand(commandParts);
-    }
-
-    // Build server command, using coursier to launch language server along with any dependencies add by the user.
-    private String[] buildServerCommand(List<String> dependencies, Project project) {
-        List<String> commandParts = new ArrayList<>(Arrays.asList(project.getBasePath() + CS_BIN,
-                "launch", "--cache", project.getBasePath() + CS_CACHE, LANGUAGE_SERVER_ARTIFACT));
-        // Add model dependency artifacts.
-        commandParts.addAll(dependencies);
-        // Add maven local repository, where LSP must be cached.
-        commandParts.add("-r");
-        commandParts.add("m2Local");
-        // Add LSP arguments
-        commandParts.add("--");
-        commandParts.add("0");
-        return commandParts.toArray(new String[0]);
-    }
-
-    // Run a coursier cli command.
-    private static void runCommand(List<String> command) {
-        ProcessBuilder builder = new ProcessBuilder(command);
-        try {
-            Process proc = builder.start();
-            proc.waitFor();
-            proc.destroy();
-
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     // Get dependencies specified by user as JSON string.
     private String getDependenciesContent(String baseDir) {
         for (String location : DEPENDENCY_LOCATIONS) {
@@ -155,5 +120,70 @@ public class SmithyPostStartupActivity implements StartupActivity {
             }
         }
         return "";
+    }
+
+    // Build server command, using Coursier to launch language server along with any dependencies add by the user.
+    private String[] buildServerCommand(List<String> dependencies, Project project) {
+        // Add the language server artifact.
+        List<String> artifacts = ListUtils.of(LANGUAGE_SERVER_ARTIFACT);
+        // Add model dependency artifacts.
+        artifacts.addAll(dependencies);
+        List<String> commandParts = getBaseCommand(project,
+                "launch",
+                // Add maven local repository, where the language server must be cached.
+                ListUtils.of("m2Local"),
+                // Artifacts for launch command to target, with language server as the first artifact.
+                artifacts);
+
+        // Add language server arguments, setting the port to 0 to use stdio for communication.
+        commandParts.add("--");
+        commandParts.add("0");
+        return commandParts.toArray(new String[0]);
+    }
+
+    // Fetches dependencies for a list of artifacts from their repositories.
+    private void fetchDependencies(Project project, List<String> repositories, List<String> artifacts) {
+        List<String> commandParts = getBaseCommand(project, "fetch", repositories, artifacts);
+        runCommand(commandParts);
+    }
+
+    // Gets base Coursier command.
+    private List<String> getBaseCommand(Project project,
+                                        String command,
+                                        List<String> repositories,
+                                        List<String> artifacts
+    ) {
+        List<String> commandParts = new ArrayList<>(ListUtils.of(
+                // Point to the right Coursier binary location.
+                project.getBasePath() + COURSIER_BIN,
+                // Set the type of command to run.
+                command,
+                // Set the cache directory.
+                "--cache", project.getBasePath() + COURSIER_CACHE));
+        // Add each repository to the command, using the `-r` flag.
+        for (String repo : repositories) {
+            commandParts.add("-r");
+            commandParts.add(repo);
+        }
+        // Add the list of artifacts.
+        commandParts.addAll(artifacts);
+        return commandParts;
+    }
+
+    // Run Coursier cli command.
+    private static void runCommand(List<String> command) {
+        ProcessBuilder builder = new ProcessBuilder(command);
+        try {
+            Process proc = builder.start();
+            proc.waitFor();
+            proc.destroy();
+            // Throw a runtime error if the Coursier command failed.
+            if (proc.exitValue() != 0) {
+                throw new RuntimeException("Coursier command returned non-zero");
+
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
