@@ -19,7 +19,11 @@ import java.util.List;
 import software.amazon.smithy.utils.SmithyBuilder;
 import software.amazon.smithy.utils.ToSmithyBuilder;
 
-public final class ModelDependencies implements ToSmithyBuilder<ModelDependencies> {
+/**
+ * Defines a set of dependencies, including the source repositories and artifacts,
+ * for a Smithy model.
+ */
+final class ModelDependencies implements ToSmithyBuilder<ModelDependencies> {
     private final List<String> artifacts;
     private final List<String> repositories;
 
@@ -28,6 +32,10 @@ public final class ModelDependencies implements ToSmithyBuilder<ModelDependencie
         repositories = builder.repositories;
     }
 
+    /**
+     * Creates a builder for the model dependencies.
+     * @return Returns the created builder.
+     */
     public static Builder builder() {
         return new Builder();
     }
@@ -39,14 +47,27 @@ public final class ModelDependencies implements ToSmithyBuilder<ModelDependencie
                 .repositories(repositories);
     }
 
+    /**
+     * Gets the list of artifacts.
+     *
+     * @return Returns the list of dependency artifacts.
+     */
     public List<String> getArtifacts() {
         return artifacts;
     }
 
+    /**
+     * Gets the list of repositories.
+     *
+     * @return Returns the list of dependency source repositories.
+     */
     public List<String> getRepositories() {
         return repositories;
     }
 
+    /**
+     * Builds a {@link ModelDependencies}.
+     */
     public static final class Builder implements SmithyBuilder<ModelDependencies> {
         private List<String> artifacts;
         private List<String> repositories;
@@ -58,11 +79,21 @@ public final class ModelDependencies implements ToSmithyBuilder<ModelDependencie
             return new ModelDependencies(this);
         }
 
+        /**
+         * Sets the artifacts.
+         * @param artifacts List of artifacts that the model depends on.
+         * @return Returns the builder.
+         */
         public Builder artifacts(List<String> artifacts) {
             this.artifacts = artifacts;
             return this;
         }
 
+        /**
+         * Sets the repositories.
+         * @param repositories List of source repositories for the artifacts.
+         * @return Returns the builder.
+         */
         public Builder repositories(List<String> repositories) {
             this.repositories = repositories;
             return this;
