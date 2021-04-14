@@ -1,4 +1,5 @@
 ## Smithy IntelliJ
+[![Build Status](https://github.com/awslabs/smithy-intellij/workflows/ci/badge.svg)](https://github.com/awslabs/smithy-intellij/actions/workflows/ci.yml)
 
 **WARNING: This repository in development. All interfaces are subject to change.**
 
