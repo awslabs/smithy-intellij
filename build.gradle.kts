@@ -54,6 +54,8 @@ intellij {
     setPlugins(*platformPlugins.split(',').map(String::trim).filter(String::isNotEmpty).toTypedArray())
 }
 
+sourceSets["main"].java.srcDirs("src/main/gen")
+
 /*
  * CheckStyle
  * ====================================================
@@ -62,6 +64,9 @@ intellij {
  */
 
 tasks["checkstyleTest"].enabled = false
+tasks.checkstyleMain {
+    source = fileTree("src/main/java")
+}
 
 /*
  * Spotbugs
@@ -72,6 +77,9 @@ tasks["checkstyleTest"].enabled = false
 
 // We don't need to lint tests.
 tasks["spotbugsTest"].enabled = false
+tasks.spotbugsMain {
+    excludeFilter.set(project.file("config/spotbugs/filter.xml"))
+}
 
 tasks {
     // Set the compatibility versions to 1.8
