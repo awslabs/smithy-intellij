@@ -1,0 +1,142 @@
+{
+  classHeader = "CopyrightHeader.txt"
+  parserClass="software.amazon.smithy.plugin.parser.SmithyParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Smithy"
+  psiImplClassSuffix="Impl"
+  psiPackage="software.amazon.smithy.plugin.language.psi"
+  psiImplPackage="software.amazon.smithy.plugin.language.psi.impl"
+
+  elementTypeHolderClass="software.amazon.smithy.plugin.language.psi.SmithyTypes"
+  elementTypeClass="software.amazon.smithy.plugin.language.psi.SmithyElementType"
+  tokenTypeClass="software.amazon.smithy.plugin.language.psi.SmithyTokenType"
+
+  tokens = [
+    DOC_COMMENT = "regexp:///[^\r\n]*"
+    LINE_COMMENT = "regexp://[^\r\n]*"
+    SPACE = "regexp:\s+"
+    NEWLINE = "regexp:\r?\n"
+    VERSION = "$version"
+    APPLY = "apply"
+    METADATA = "metadata"
+    NAMESPACE_KEYWORD = "namespace"
+    USE_KEYWORD = "use"
+    QUOTED_TEXT = "regexp:\"([^\\\"]|\\.)*\""
+    DQUOTE = '"'
+    ESCAPE = '\'
+    COLON = ":"
+    EQ = "="
+    COMMA = ","
+    LBRACE =  "{"
+    RBRACE =  "}"
+    LBRACK =  "["
+    RBRACK =  "]"
+    LPAREN = "("
+    RPAREN = ")"
+    POUND = "#"
+    NODE_CONSTANTS = "regexp:(TRUE|FALSE|NULL)"
+    MINUS = "-"
+    PLUS = "+"
+    TRAIT_ID = "regexp:@(((_|\p{Alpha})(_|\p{Alpha}|\p{Digit})*(.(_|\p{Alpha})(_|\p{Alpha}|\p{Digit})*)*)#)*(_|\p{Alpha})(_|\p{Alpha}|\p{Digit})*"
+    INT = "regexp:0|[1-9][0-9]*"
+    FRAC = "regexp:\.[0-9]*"
+    EXP = "regexp:[eE]([-a+])?[0-9]+"
+    SIMPLE_TYPE_NAME = "regexp:(blob|boolean|document|string|byte|short|integer|long|float|double|bigInteger|bigDecimal|timestamp)"
+    COMPLEX_TYPE_NAME = "regexp:(list|set|map|structure|union)"
+    NODE_OBJECT_TYPE_NAME = "regexp:(service|resource|operation)"
+    SHAPE_ID_MEMBER = "regexp:\$(_|\p{Alpha})(_|\p{Alpha}|\p{Digit})*"
+    IDENTIFIER = "regexp:(_|\p{Alpha})(_|\p{Alpha}|\p{Digit})*"
+    TEXT_BLOCK = "regexp:\"\"\"(\r?\n[ !#-\[\]-}]*)*\"\"\""
+  ]
+}
+
+idl ::= ws version_section ws metadata_section shape_section
+
+version_section ::= VERSION COLON ws QUOTED_TEXT
+
+metadata_section ::= (metadata_statement)*
+
+metadata_statement ::= METADATA ws IDENTIFIER ws EQ ws node_value ws
+
+ws ::= (SPACE | NEWLINE | comment | COMMA)*
+
+comment ::= LINE_COMMENT | DOC_COMMENT
+
+node_value ::= node_array | node_object | number | NODE_CONSTANTS | node_string_value
+
+node_array ::= LBRACK ws (node_value ws)* RBRACK
+
+node_object ::= LBRACE ws (node_object_kvp ws)* RBRACE
+
+node_object_kvp ::= IDENTIFIER ws COLON ws node_value
+
+number ::= [MINUS] INT [FRAC] [EXP]
+
+//node_string_value ::= shape_id | TEXT_BLOCK | quoted_text
+node_string_value ::= shape_id | TEXT_BLOCK | QUOTED_TEXT
+//
+//quoted_text ::= DQUOTE quoted_char* DQUOTE
+//
+//quoted_char ::= QUOTED_CHAR_SUBSET | escaped_char | preserved_double
+//
+//escaped_char ::= ESCAPE (ESCAPE | "'" | DQUOTE | "b" | "f" | "n" | "r" | "t" | "/" | unicode_escape)
+//
+//unicode_escape ::= "u" hex hex hex hex
+//
+//hex ::= digit | "a" | "b" | "c" | "d" | "e" | "f" | "A" | "B" | "C" | "D" | "E" | "F"
+//
+//preserved_double ::= ESCAPE QUOTED_CHAR_SUBSET
+//
+//shape_section ::= [namespace_statement [use_section] [shape_statements]]
+shape_section ::= namespace_statement* use_section shape_statements
+
+namespace_statement ::= ws NAMESPACE_KEYWORD ws namespace ws
+
+use_section ::= (use_statement)*
+
+use_statement ::= ws USE_KEYWORD ws absolute_root_shape_id ws
+
+shape_statements ::= (shape_statement | apply_statement)*
+
+shape_statement ::= trait_statements shape_body
+
+shape_body ::=
+    simple_shape_statement
+    | complex_shape_statement
+    | node_object_shape_statement
+
+simple_shape_statement ::= ws SIMPLE_TYPE_NAME ws IDENTIFIER
+
+shape_members ::= LBRACE ws (shape_member_kvp)* ws RBRACE
+
+shape_member_kvp ::= trait_statements IDENTIFIER ws COLON ws shape_id
+
+complex_shape_statement ::= ws COMPLEX_TYPE_NAME ws IDENTIFIER ws shape_members
+
+node_object_shape_statement ::= ws NODE_OBJECT_TYPE_NAME ws IDENTIFIER ws node_object
+
+trait_statements ::= (ws trait)* ws
+
+trait ::= TRAIT_ID [trait_body]
+
+trait_body ::= LPAREN ws trait_body_value ws RPAREN
+
+trait_body_value ::= trait_structure | node_value
+
+trait_structure ::= trait_structure_kvp (ws trait_structure_kvp)*
+
+trait_structure_kvp ::= node_object_key ws COLON ws node_value
+
+node_object_key ::= QUOTED_TEXT | IDENTIFIER
+
+apply_statement ::= APPLY ws shape_id ws trait ws
+
+shape_id ::= root_shape_id [SHAPE_ID_MEMBER]
+
+root_shape_id ::= absolute_root_shape_id | IDENTIFIER
+
+absolute_root_shape_id ::= namespace POUND IDENTIFIER
+
+namespace ::= IDENTIFIER ("." IDENTIFIER)*
