@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-package software.amazon.smithy.plugin;
+package software.amazon.smithy.plugin.language;
 
 import com.intellij.lang.Language;
 

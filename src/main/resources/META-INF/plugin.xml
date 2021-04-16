@@ -12,7 +12,7 @@
         <projectService serviceImplementation="software.amazon.smithy.plugin.services.MyProjectService"/>
         <postStartupActivity implementation="software.amazon.smithy.plugin.SmithyPostStartupActivity"
                              id="software.amazon.smithy.plugin.SmithyPostStartupActivity"/>
-        <fileType name="Smithy File" implementationClass="software.amazon.smithy.plugin.SmithyFileType"
+        <fileType name="Smithy File" implementationClass="software.amazon.smithy.plugin.language.SmithyFileType"
                   fieldName="INSTANCE" language="Smithy" extensions="smithy"/>
         <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
                                 id="LSPCompletionContributor" language="any"/>
