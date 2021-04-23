@@ -14,6 +14,8 @@
                              id="software.amazon.smithy.plugin.SmithyPostStartupActivity"/>
         <fileType name="Smithy File" implementationClass="software.amazon.smithy.plugin.language.SmithyFileType"
                   fieldName="INSTANCE" language="Smithy" extensions="smithy"/>
+        <lang.parserDefinition language="Smithy"
+                               implementationClass="software.amazon.smithy.plugin.language.SmithyParserDefinition"/>
         <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
                                 id="LSPCompletionContributor" language="any"/>
         <externalAnnotator id="LSPAnnotator" language="Smithy" implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
