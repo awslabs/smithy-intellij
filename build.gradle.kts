@@ -1,5 +1,7 @@
 import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.grammarkit.tasks.GenerateLexer
+import org.jetbrains.grammarkit.tasks.GenerateParser
 
 plugins {
     // Java support
@@ -10,6 +12,7 @@ plugins {
     id("org.jetbrains.changelog") version "0.6.2"
     id("checkstyle")
     id("com.github.spotbugs") version "4.7.0"
+    id("org.jetbrains.grammarkit") version "2021.1.2"
 }
 
 // Import variables from gradle.properties file
@@ -79,6 +82,27 @@ tasks.checkstyleMain {
 tasks["spotbugsTest"].enabled = false
 tasks.spotbugsMain {
     excludeFilter.set(project.file("config/spotbugs/filter.xml"))
+}
+
+/*
+ * Grammar-Kit
+ * ====================================================
+ *
+ * Configure tasks for generating Lexer and Parser classes
+ */
+val generateSmithyLexer = task<GenerateLexer>("generateSmithyLexer") {
+    source = "src/main/java/software/amazon/smithy/plugin/language/Smithy.flex"
+    targetDir = "src/main/gen/software/amazon/smithy/plugin/language"
+    targetClass = "SmithyLexer"
+    purgeOldFiles = true
+}
+
+val generateSmithyParser = task<GenerateParser>("generateSmithyParser") {
+    source = "src/main/java/software/amazon/smithy/plugin/language/Smithy.bnf"
+    targetRoot = "src/main/gen"
+    pathToParser = "/software/amazon/smithy/plugin/parser/SmithyParser.java"
+    pathToPsiRoot = "/software/amazon/smithy/plugin/language/psi"
+    purgeOldFiles = true
 }
 
 tasks {
