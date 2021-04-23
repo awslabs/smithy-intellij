@@ -31,4 +31,7 @@
     <Match>
         <Class name="~software\.amazon\.smithy\.plugin\.language\.psi\.SmithyFile"/>
     </Match>
+    <Match>
+        <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithySyntaxHighlighter"/>
+    </Match>
 </FindBugsFilter>
