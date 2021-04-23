@@ -22,4 +22,7 @@
     <Match>
         <Class name="~software\.amazon\.smithy\.plugin\.language\.psi\.impl.\Smithy.*"/>
     </Match>
+    <Match>
+        <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithyLexer"/>
+    </Match>
 </FindBugsFilter>
