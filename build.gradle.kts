@@ -103,8 +103,14 @@ tasks.spotbugsMain {
  * Grammar-Kit
  * ====================================================
  *
- * Configure tasks for generating Lexer and Parser classes
+ * Apply Grammar-Kit plugin and configure tasks for generating Lexer and Parser classes.
  */
+apply(plugin = "org.jetbrains.grammarkit")
+
+grammarKit {
+    jflexRelease = "1.7.0-1"
+}
+
 val generateSmithyLexer = task<GenerateLexer>("generateSmithyLexer") {
     source = "src/main/java/software/amazon/smithy/plugin/language/Smithy.flex"
     targetDir = "src/main/gen/software/amazon/smithy/plugin/language"
