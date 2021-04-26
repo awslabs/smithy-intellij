@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyTraitStructureKvpImpl extends ASTWrapperPsiElement implements SmithyTraitStructureKvp {
 
-  public SmithyTraitStructureKvpImpl(@NotNull ASTNode node) {
+  public SmithyTraitStructureKvpImpl(ASTNode node) {
     super(node);
   }
 
