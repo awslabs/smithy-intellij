@@ -29,760 +29,760 @@ import com.intellij.lang.LightPsiParser;
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class SmithyParser implements PsiParser, LightPsiParser {
 
-  public ASTNode parse(IElementType t, PsiBuilder b) {
-    parseLight(t, b);
-    return b.getTreeBuilt();
+  public ASTNode parse(IElementType root_, PsiBuilder builder_) {
+    parseLight(root_, builder_);
+    return builder_.getTreeBuilt();
   }
 
-  public void parseLight(IElementType t, PsiBuilder b) {
-    boolean r;
-    b = adapt_builder_(t, b, this, null);
-    Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    r = parse_root_(t, b);
-    exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
+  public void parseLight(IElementType root_, PsiBuilder builder_) {
+    boolean result_;
+    builder_ = adapt_builder_(root_, builder_, this, null);
+    Marker marker_ = enter_section_(builder_, 0, _COLLAPSE_, null);
+    result_ = parse_root_(root_, builder_);
+    exit_section_(builder_, 0, marker_, root_, result_, true, TRUE_CONDITION);
   }
 
-  protected boolean parse_root_(IElementType t, PsiBuilder b) {
-    return parse_root_(t, b, 0);
+  protected boolean parse_root_(IElementType root_, PsiBuilder builder_) {
+    return parse_root_(root_, builder_, 0);
   }
 
-  static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
-    return idl(b, l + 1);
+  static boolean parse_root_(IElementType root_, PsiBuilder builder_, int level_) {
+    return idl(builder_, level_ + 1);
   }
 
   /* ********************************************************** */
   // namespace POUND IDENTIFIER
-  public static boolean absolute_root_shape_id(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "absolute_root_shape_id")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = namespace(b, l + 1);
-    r = r && consumeTokens(b, 0, POUND, IDENTIFIER);
-    exit_section_(b, m, ABSOLUTE_ROOT_SHAPE_ID, r);
-    return r;
+  public static boolean absolute_root_shape_id(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "absolute_root_shape_id")) return false;
+    if (!nextTokenIs(builder_, IDENTIFIER)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = namespace(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, POUND, IDENTIFIER);
+    exit_section_(builder_, marker_, ABSOLUTE_ROOT_SHAPE_ID, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // APPLY ws shape_id ws trait ws
-  public static boolean apply_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_statement")) return false;
-    if (!nextTokenIs(b, APPLY)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, APPLY);
-    r = r && ws(b, l + 1);
-    r = r && shape_id(b, l + 1);
-    r = r && ws(b, l + 1);
-    r = r && trait(b, l + 1);
-    r = r && ws(b, l + 1);
-    exit_section_(b, m, APPLY_STATEMENT, r);
-    return r;
+  public static boolean apply_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "apply_statement")) return false;
+    if (!nextTokenIs(builder_, APPLY)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, APPLY);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && shape_id(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && trait(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    exit_section_(builder_, marker_, APPLY_STATEMENT, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LINE_COMMENT | DOC_COMMENT
-  public static boolean comment(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "comment")) return false;
-    if (!nextTokenIs(b, "<comment>", DOC_COMMENT, LINE_COMMENT)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, COMMENT, "<comment>");
-    r = consumeToken(b, LINE_COMMENT);
-    if (!r) r = consumeToken(b, DOC_COMMENT);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean comment(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "comment")) return false;
+    if (!nextTokenIs(builder_, "<comment>", DOC_COMMENT, LINE_COMMENT)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, COMMENT, "<comment>");
+    result_ = consumeToken(builder_, LINE_COMMENT);
+    if (!result_) result_ = consumeToken(builder_, DOC_COMMENT);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // ws COMPLEX_TYPE_NAME ws IDENTIFIER ws shape_members
-  public static boolean complex_shape_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "complex_shape_statement")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, COMPLEX_SHAPE_STATEMENT, "<complex shape statement>");
-    r = ws(b, l + 1);
-    r = r && consumeToken(b, COMPLEX_TYPE_NAME);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && ws(b, l + 1);
-    r = r && shape_members(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean complex_shape_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "complex_shape_statement")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, COMPLEX_SHAPE_STATEMENT, "<complex shape statement>");
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, COMPLEX_TYPE_NAME);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && shape_members(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // ws version_section ws metadata_section shape_section
-  static boolean idl(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "idl")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = ws(b, l + 1);
-    r = r && version_section(b, l + 1);
-    r = r && ws(b, l + 1);
-    r = r && metadata_section(b, l + 1);
-    r = r && shape_section(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  static boolean idl(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "idl")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && version_section(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && metadata_section(builder_, level_ + 1);
+    result_ = result_ && shape_section(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // (metadata_statement)*
-  public static boolean metadata_section(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "metadata_section")) return false;
-    Marker m = enter_section_(b, l, _NONE_, METADATA_SECTION, "<metadata section>");
+  public static boolean metadata_section(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "metadata_section")) return false;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, METADATA_SECTION, "<metadata section>");
     while (true) {
-      int c = current_position_(b);
-      if (!metadata_section_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "metadata_section", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!metadata_section_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "metadata_section", pos_)) break;
     }
-    exit_section_(b, l, m, true, false, null);
+    exit_section_(builder_, level_, marker_, true, false, null);
     return true;
   }
 
   // (metadata_statement)
-  private static boolean metadata_section_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "metadata_section_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = metadata_statement(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean metadata_section_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "metadata_section_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = metadata_statement(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // METADATA ws IDENTIFIER ws EQ ws node_value ws
-  public static boolean metadata_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "metadata_statement")) return false;
-    if (!nextTokenIs(b, METADATA)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, METADATA);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, EQ);
-    r = r && ws(b, l + 1);
-    r = r && node_value(b, l + 1);
-    r = r && ws(b, l + 1);
-    exit_section_(b, m, METADATA_STATEMENT, r);
-    return r;
+  public static boolean metadata_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "metadata_statement")) return false;
+    if (!nextTokenIs(builder_, METADATA)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, METADATA);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EQ);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && node_value(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    exit_section_(builder_, marker_, METADATA_STATEMENT, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // IDENTIFIER ("." IDENTIFIER)*
-  public static boolean namespace(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "namespace")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
-    r = r && namespace_1(b, l + 1);
-    exit_section_(b, m, NAMESPACE, r);
-    return r;
+  public static boolean namespace(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace")) return false;
+    if (!nextTokenIs(builder_, IDENTIFIER)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && namespace_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, NAMESPACE, result_);
+    return result_;
   }
 
   // ("." IDENTIFIER)*
-  private static boolean namespace_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "namespace_1")) return false;
+  private static boolean namespace_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_1")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!namespace_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "namespace_1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!namespace_1_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "namespace_1", pos_)) break;
     }
     return true;
   }
 
   // "." IDENTIFIER
-  private static boolean namespace_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "namespace_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, ".");
-    r = r && consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean namespace_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ".");
+    result_ = result_ && consumeToken(builder_, IDENTIFIER);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // ws NAMESPACE_KEYWORD ws namespace ws
-  public static boolean namespace_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "namespace_statement")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, NAMESPACE_STATEMENT, "<namespace statement>");
-    r = ws(b, l + 1);
-    r = r && consumeToken(b, NAMESPACE_KEYWORD);
-    r = r && ws(b, l + 1);
-    r = r && namespace(b, l + 1);
-    r = r && ws(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean namespace_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_statement")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NAMESPACE_STATEMENT, "<namespace statement>");
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, NAMESPACE_KEYWORD);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && namespace(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // LBRACK ws (node_value ws)* RBRACK
-  public static boolean node_array(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_array")) return false;
-    if (!nextTokenIs(b, LBRACK)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LBRACK);
-    r = r && ws(b, l + 1);
-    r = r && node_array_2(b, l + 1);
-    r = r && consumeToken(b, RBRACK);
-    exit_section_(b, m, NODE_ARRAY, r);
-    return r;
+  public static boolean node_array(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_array")) return false;
+    if (!nextTokenIs(builder_, LBRACK)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LBRACK);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && node_array_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACK);
+    exit_section_(builder_, marker_, NODE_ARRAY, result_);
+    return result_;
   }
 
   // (node_value ws)*
-  private static boolean node_array_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_array_2")) return false;
+  private static boolean node_array_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_array_2")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!node_array_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "node_array_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!node_array_2_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "node_array_2", pos_)) break;
     }
     return true;
   }
 
   // node_value ws
-  private static boolean node_array_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_array_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = node_value(b, l + 1);
-    r = r && ws(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean node_array_2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_array_2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = node_value(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LBRACE ws (node_object_kvp ws)* RBRACE
-  public static boolean node_object(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_object")) return false;
-    if (!nextTokenIs(b, LBRACE)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LBRACE);
-    r = r && ws(b, l + 1);
-    r = r && node_object_2(b, l + 1);
-    r = r && consumeToken(b, RBRACE);
-    exit_section_(b, m, NODE_OBJECT, r);
-    return r;
+  public static boolean node_object(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_object")) return false;
+    if (!nextTokenIs(builder_, LBRACE)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && node_object_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
+    exit_section_(builder_, marker_, NODE_OBJECT, result_);
+    return result_;
   }
 
   // (node_object_kvp ws)*
-  private static boolean node_object_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_object_2")) return false;
+  private static boolean node_object_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_object_2")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!node_object_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "node_object_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!node_object_2_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "node_object_2", pos_)) break;
     }
     return true;
   }
 
   // node_object_kvp ws
-  private static boolean node_object_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_object_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = node_object_kvp(b, l + 1);
-    r = r && ws(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean node_object_2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_object_2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = node_object_kvp(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // QUOTED_TEXT | IDENTIFIER
-  public static boolean node_object_key(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_object_key")) return false;
-    if (!nextTokenIs(b, "<node object key>", IDENTIFIER, QUOTED_TEXT)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, NODE_OBJECT_KEY, "<node object key>");
-    r = consumeToken(b, QUOTED_TEXT);
-    if (!r) r = consumeToken(b, IDENTIFIER);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean node_object_key(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_object_key")) return false;
+    if (!nextTokenIs(builder_, "<node object key>", IDENTIFIER, QUOTED_TEXT)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NODE_OBJECT_KEY, "<node object key>");
+    result_ = consumeToken(builder_, QUOTED_TEXT);
+    if (!result_) result_ = consumeToken(builder_, IDENTIFIER);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // IDENTIFIER ws COLON ws node_value
-  public static boolean node_object_kvp(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_object_kvp")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, COLON);
-    r = r && ws(b, l + 1);
-    r = r && node_value(b, l + 1);
-    exit_section_(b, m, NODE_OBJECT_KVP, r);
-    return r;
+  public static boolean node_object_kvp(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_object_kvp")) return false;
+    if (!nextTokenIs(builder_, IDENTIFIER)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, COLON);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && node_value(builder_, level_ + 1);
+    exit_section_(builder_, marker_, NODE_OBJECT_KVP, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // ws NODE_OBJECT_TYPE_NAME ws IDENTIFIER ws node_object
-  public static boolean node_object_shape_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_object_shape_statement")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, NODE_OBJECT_SHAPE_STATEMENT, "<node object shape statement>");
-    r = ws(b, l + 1);
-    r = r && consumeToken(b, NODE_OBJECT_TYPE_NAME);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && ws(b, l + 1);
-    r = r && node_object(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean node_object_shape_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_object_shape_statement")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NODE_OBJECT_SHAPE_STATEMENT, "<node object shape statement>");
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, NODE_OBJECT_TYPE_NAME);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && node_object(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // shape_id | TEXT_BLOCK | QUOTED_TEXT
-  public static boolean node_string_value(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_string_value")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, NODE_STRING_VALUE, "<node string value>");
-    r = shape_id(b, l + 1);
-    if (!r) r = consumeToken(b, TEXT_BLOCK);
-    if (!r) r = consumeToken(b, QUOTED_TEXT);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean node_string_value(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_string_value")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NODE_STRING_VALUE, "<node string value>");
+    result_ = shape_id(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, TEXT_BLOCK);
+    if (!result_) result_ = consumeToken(builder_, QUOTED_TEXT);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // node_array | node_object | number | NODE_CONSTANTS | node_string_value
-  public static boolean node_value(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "node_value")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, NODE_VALUE, "<node value>");
-    r = node_array(b, l + 1);
-    if (!r) r = node_object(b, l + 1);
-    if (!r) r = number(b, l + 1);
-    if (!r) r = consumeToken(b, NODE_CONSTANTS);
-    if (!r) r = node_string_value(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean node_value(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "node_value")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NODE_VALUE, "<node value>");
+    result_ = node_array(builder_, level_ + 1);
+    if (!result_) result_ = node_object(builder_, level_ + 1);
+    if (!result_) result_ = number(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, NODE_CONSTANTS);
+    if (!result_) result_ = node_string_value(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // [MINUS] INT [FRAC] [EXP]
-  public static boolean number(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number")) return false;
-    if (!nextTokenIs(b, "<number>", INT, MINUS)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, NUMBER, "<number>");
-    r = number_0(b, l + 1);
-    r = r && consumeToken(b, INT);
-    r = r && number_2(b, l + 1);
-    r = r && number_3(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean number(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "number")) return false;
+    if (!nextTokenIs(builder_, "<number>", INT, MINUS)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NUMBER, "<number>");
+    result_ = number_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, INT);
+    result_ = result_ && number_2(builder_, level_ + 1);
+    result_ = result_ && number_3(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // [MINUS]
-  private static boolean number_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number_0")) return false;
-    consumeToken(b, MINUS);
+  private static boolean number_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "number_0")) return false;
+    consumeToken(builder_, MINUS);
     return true;
   }
 
   // [FRAC]
-  private static boolean number_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number_2")) return false;
-    consumeToken(b, FRAC);
+  private static boolean number_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "number_2")) return false;
+    consumeToken(builder_, FRAC);
     return true;
   }
 
   // [EXP]
-  private static boolean number_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number_3")) return false;
-    consumeToken(b, EXP);
+  private static boolean number_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "number_3")) return false;
+    consumeToken(builder_, EXP);
     return true;
   }
 
   /* ********************************************************** */
   // absolute_root_shape_id | IDENTIFIER
-  public static boolean root_shape_id(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "root_shape_id")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = absolute_root_shape_id(b, l + 1);
-    if (!r) r = consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, ROOT_SHAPE_ID, r);
-    return r;
+  public static boolean root_shape_id(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "root_shape_id")) return false;
+    if (!nextTokenIs(builder_, IDENTIFIER)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = absolute_root_shape_id(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, IDENTIFIER);
+    exit_section_(builder_, marker_, ROOT_SHAPE_ID, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // simple_shape_statement
   //     | complex_shape_statement
   //     | node_object_shape_statement
-  public static boolean shape_body(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_body")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SHAPE_BODY, "<shape body>");
-    r = simple_shape_statement(b, l + 1);
-    if (!r) r = complex_shape_statement(b, l + 1);
-    if (!r) r = node_object_shape_statement(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean shape_body(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_body")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, SHAPE_BODY, "<shape body>");
+    result_ = simple_shape_statement(builder_, level_ + 1);
+    if (!result_) result_ = complex_shape_statement(builder_, level_ + 1);
+    if (!result_) result_ = node_object_shape_statement(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // root_shape_id [SHAPE_ID_MEMBER]
-  public static boolean shape_id(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_id")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = root_shape_id(b, l + 1);
-    r = r && shape_id_1(b, l + 1);
-    exit_section_(b, m, SHAPE_ID, r);
-    return r;
+  public static boolean shape_id(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_id")) return false;
+    if (!nextTokenIs(builder_, IDENTIFIER)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = root_shape_id(builder_, level_ + 1);
+    result_ = result_ && shape_id_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, SHAPE_ID, result_);
+    return result_;
   }
 
   // [SHAPE_ID_MEMBER]
-  private static boolean shape_id_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_id_1")) return false;
-    consumeToken(b, SHAPE_ID_MEMBER);
+  private static boolean shape_id_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_id_1")) return false;
+    consumeToken(builder_, SHAPE_ID_MEMBER);
     return true;
   }
 
   /* ********************************************************** */
   // trait_statements IDENTIFIER ws COLON ws shape_id
-  public static boolean shape_member_kvp(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_member_kvp")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SHAPE_MEMBER_KVP, "<shape member kvp>");
-    r = trait_statements(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, COLON);
-    r = r && ws(b, l + 1);
-    r = r && shape_id(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean shape_member_kvp(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_member_kvp")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, SHAPE_MEMBER_KVP, "<shape member kvp>");
+    result_ = trait_statements(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, COLON);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && shape_id(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // LBRACE ws (shape_member_kvp)* ws RBRACE
-  public static boolean shape_members(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_members")) return false;
-    if (!nextTokenIs(b, LBRACE)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LBRACE);
-    r = r && ws(b, l + 1);
-    r = r && shape_members_2(b, l + 1);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, RBRACE);
-    exit_section_(b, m, SHAPE_MEMBERS, r);
-    return r;
+  public static boolean shape_members(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_members")) return false;
+    if (!nextTokenIs(builder_, LBRACE)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && shape_members_2(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
+    exit_section_(builder_, marker_, SHAPE_MEMBERS, result_);
+    return result_;
   }
 
   // (shape_member_kvp)*
-  private static boolean shape_members_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_members_2")) return false;
+  private static boolean shape_members_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_members_2")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!shape_members_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "shape_members_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!shape_members_2_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "shape_members_2", pos_)) break;
     }
     return true;
   }
 
   // (shape_member_kvp)
-  private static boolean shape_members_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_members_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shape_member_kvp(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean shape_members_2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_members_2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = shape_member_kvp(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // namespace_statement* use_section shape_statements
-  public static boolean shape_section(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_section")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SHAPE_SECTION, "<shape section>");
-    r = shape_section_0(b, l + 1);
-    r = r && use_section(b, l + 1);
-    r = r && shape_statements(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean shape_section(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_section")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, SHAPE_SECTION, "<shape section>");
+    result_ = shape_section_0(builder_, level_ + 1);
+    result_ = result_ && use_section(builder_, level_ + 1);
+    result_ = result_ && shape_statements(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // namespace_statement*
-  private static boolean shape_section_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_section_0")) return false;
+  private static boolean shape_section_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_section_0")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!namespace_statement(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "shape_section_0", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!namespace_statement(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "shape_section_0", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // trait_statements shape_body
-  public static boolean shape_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_statement")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SHAPE_STATEMENT, "<shape statement>");
-    r = trait_statements(b, l + 1);
-    r = r && shape_body(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean shape_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_statement")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, SHAPE_STATEMENT, "<shape statement>");
+    result_ = trait_statements(builder_, level_ + 1);
+    result_ = result_ && shape_body(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // (shape_statement | apply_statement)*
-  public static boolean shape_statements(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_statements")) return false;
-    Marker m = enter_section_(b, l, _NONE_, SHAPE_STATEMENTS, "<shape statements>");
+  public static boolean shape_statements(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_statements")) return false;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, SHAPE_STATEMENTS, "<shape statements>");
     while (true) {
-      int c = current_position_(b);
-      if (!shape_statements_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "shape_statements", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!shape_statements_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "shape_statements", pos_)) break;
     }
-    exit_section_(b, l, m, true, false, null);
+    exit_section_(builder_, level_, marker_, true, false, null);
     return true;
   }
 
   // shape_statement | apply_statement
-  private static boolean shape_statements_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shape_statements_0")) return false;
-    boolean r;
-    r = shape_statement(b, l + 1);
-    if (!r) r = apply_statement(b, l + 1);
-    return r;
+  private static boolean shape_statements_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "shape_statements_0")) return false;
+    boolean result_;
+    result_ = shape_statement(builder_, level_ + 1);
+    if (!result_) result_ = apply_statement(builder_, level_ + 1);
+    return result_;
   }
 
   /* ********************************************************** */
   // ws SIMPLE_TYPE_NAME ws IDENTIFIER
-  public static boolean simple_shape_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "simple_shape_statement")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SIMPLE_SHAPE_STATEMENT, "<simple shape statement>");
-    r = ws(b, l + 1);
-    r = r && consumeToken(b, SIMPLE_TYPE_NAME);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean simple_shape_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "simple_shape_statement")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, SIMPLE_SHAPE_STATEMENT, "<simple shape statement>");
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, SIMPLE_TYPE_NAME);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, IDENTIFIER);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // TRAIT_ID [trait_body]
-  public static boolean trait(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait")) return false;
-    if (!nextTokenIs(b, TRAIT_ID)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, TRAIT_ID);
-    r = r && trait_1(b, l + 1);
-    exit_section_(b, m, TRAIT, r);
-    return r;
+  public static boolean trait(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait")) return false;
+    if (!nextTokenIs(builder_, TRAIT_ID)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, TRAIT_ID);
+    result_ = result_ && trait_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, TRAIT, result_);
+    return result_;
   }
 
   // [trait_body]
-  private static boolean trait_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_1")) return false;
-    trait_body(b, l + 1);
+  private static boolean trait_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_1")) return false;
+    trait_body(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
   // LPAREN ws trait_body_value ws RPAREN
-  public static boolean trait_body(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_body")) return false;
-    if (!nextTokenIs(b, LPAREN)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LPAREN);
-    r = r && ws(b, l + 1);
-    r = r && trait_body_value(b, l + 1);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, RPAREN);
-    exit_section_(b, m, TRAIT_BODY, r);
-    return r;
+  public static boolean trait_body(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_body")) return false;
+    if (!nextTokenIs(builder_, LPAREN)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && trait_body_value(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
+    exit_section_(builder_, marker_, TRAIT_BODY, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // trait_structure | node_value
-  public static boolean trait_body_value(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_body_value")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, TRAIT_BODY_VALUE, "<trait body value>");
-    r = trait_structure(b, l + 1);
-    if (!r) r = node_value(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean trait_body_value(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_body_value")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TRAIT_BODY_VALUE, "<trait body value>");
+    result_ = trait_structure(builder_, level_ + 1);
+    if (!result_) result_ = node_value(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // (ws trait)* ws
-  public static boolean trait_statements(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_statements")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, TRAIT_STATEMENTS, "<trait statements>");
-    r = trait_statements_0(b, l + 1);
-    r = r && ws(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean trait_statements(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_statements")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TRAIT_STATEMENTS, "<trait statements>");
+    result_ = trait_statements_0(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // (ws trait)*
-  private static boolean trait_statements_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_statements_0")) return false;
+  private static boolean trait_statements_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_statements_0")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!trait_statements_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "trait_statements_0", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!trait_statements_0_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "trait_statements_0", pos_)) break;
     }
     return true;
   }
 
   // ws trait
-  private static boolean trait_statements_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_statements_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = ws(b, l + 1);
-    r = r && trait(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean trait_statements_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_statements_0_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && trait(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // trait_structure_kvp (ws trait_structure_kvp)*
-  public static boolean trait_structure(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_structure")) return false;
-    if (!nextTokenIs(b, "<trait structure>", IDENTIFIER, QUOTED_TEXT)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, TRAIT_STRUCTURE, "<trait structure>");
-    r = trait_structure_kvp(b, l + 1);
-    r = r && trait_structure_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean trait_structure(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_structure")) return false;
+    if (!nextTokenIs(builder_, "<trait structure>", IDENTIFIER, QUOTED_TEXT)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TRAIT_STRUCTURE, "<trait structure>");
+    result_ = trait_structure_kvp(builder_, level_ + 1);
+    result_ = result_ && trait_structure_1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // (ws trait_structure_kvp)*
-  private static boolean trait_structure_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_structure_1")) return false;
+  private static boolean trait_structure_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_structure_1")) return false;
     while (true) {
-      int c = current_position_(b);
-      if (!trait_structure_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "trait_structure_1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!trait_structure_1_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "trait_structure_1", pos_)) break;
     }
     return true;
   }
 
   // ws trait_structure_kvp
-  private static boolean trait_structure_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_structure_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = ws(b, l + 1);
-    r = r && trait_structure_kvp(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean trait_structure_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_structure_1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && trait_structure_kvp(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // node_object_key ws COLON ws node_value
-  public static boolean trait_structure_kvp(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "trait_structure_kvp")) return false;
-    if (!nextTokenIs(b, "<trait structure kvp>", IDENTIFIER, QUOTED_TEXT)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, TRAIT_STRUCTURE_KVP, "<trait structure kvp>");
-    r = node_object_key(b, l + 1);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, COLON);
-    r = r && ws(b, l + 1);
-    r = r && node_value(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean trait_structure_kvp(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "trait_structure_kvp")) return false;
+    if (!nextTokenIs(builder_, "<trait structure kvp>", IDENTIFIER, QUOTED_TEXT)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TRAIT_STRUCTURE_KVP, "<trait structure kvp>");
+    result_ = node_object_key(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, COLON);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && node_value(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // (use_statement)*
-  public static boolean use_section(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_section")) return false;
-    Marker m = enter_section_(b, l, _NONE_, USE_SECTION, "<use section>");
+  public static boolean use_section(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "use_section")) return false;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, USE_SECTION, "<use section>");
     while (true) {
-      int c = current_position_(b);
-      if (!use_section_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "use_section", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!use_section_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "use_section", pos_)) break;
     }
-    exit_section_(b, l, m, true, false, null);
+    exit_section_(builder_, level_, marker_, true, false, null);
     return true;
   }
 
   // (use_statement)
-  private static boolean use_section_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_section_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = use_statement(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  private static boolean use_section_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "use_section_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = use_statement(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // ws USE_KEYWORD ws absolute_root_shape_id ws
-  public static boolean use_statement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_statement")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, USE_STATEMENT, "<use statement>");
-    r = ws(b, l + 1);
-    r = r && consumeToken(b, USE_KEYWORD);
-    r = r && ws(b, l + 1);
-    r = r && absolute_root_shape_id(b, l + 1);
-    r = r && ws(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean use_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "use_statement")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, USE_STATEMENT, "<use statement>");
+    result_ = ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, USE_KEYWORD);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && absolute_root_shape_id(builder_, level_ + 1);
+    result_ = result_ && ws(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // VERSION COLON ws QUOTED_TEXT
-  public static boolean version_section(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "version_section")) return false;
-    if (!nextTokenIs(b, VERSION)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, VERSION, COLON);
-    r = r && ws(b, l + 1);
-    r = r && consumeToken(b, QUOTED_TEXT);
-    exit_section_(b, m, VERSION_SECTION, r);
-    return r;
+  public static boolean version_section(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "version_section")) return false;
+    if (!nextTokenIs(builder_, VERSION)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, VERSION, COLON);
+    result_ = result_ && ws(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, QUOTED_TEXT);
+    exit_section_(builder_, marker_, VERSION_SECTION, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // (SPACE | NEWLINE | comment | COMMA)*
-  public static boolean ws(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ws")) return false;
-    Marker m = enter_section_(b, l, _NONE_, WS, "<ws>");
+  public static boolean ws(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "ws")) return false;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, WS, "<ws>");
     while (true) {
-      int c = current_position_(b);
-      if (!ws_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "ws", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!ws_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "ws", pos_)) break;
     }
-    exit_section_(b, l, m, true, false, null);
+    exit_section_(builder_, level_, marker_, true, false, null);
     return true;
   }
 
   // SPACE | NEWLINE | comment | COMMA
-  private static boolean ws_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ws_0")) return false;
-    boolean r;
-    r = consumeToken(b, SPACE);
-    if (!r) r = consumeToken(b, NEWLINE);
-    if (!r) r = comment(b, l + 1);
-    if (!r) r = consumeToken(b, COMMA);
-    return r;
+  private static boolean ws_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "ws_0")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, SPACE);
+    if (!result_) result_ = consumeToken(builder_, NEWLINE);
+    if (!result_) result_ = comment(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, COMMA);
+    return result_;
   }
 
 }

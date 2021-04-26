@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyCommentImpl extends ASTWrapperPsiElement implements SmithyComment {
 
-  public SmithyCommentImpl(@NotNull ASTNode node) {
+  public SmithyCommentImpl(ASTNode node) {
     super(node);
   }
 
