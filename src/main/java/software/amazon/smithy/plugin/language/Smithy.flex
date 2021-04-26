@@ -47,8 +47,6 @@ WHITE_SPACE=\s+
 
 DOC_COMMENT="///"[^\r\n]*
 LINE_COMMENT="//"[^\r\n]*
-SPACE=[ \t\n\x0B\f\r]+
-NEWLINE=\r?\n
 QUOTED_TEXT=\"([^\\\"]|\\.)*\"
 NODE_CONSTANTS=(TRUE|FALSE|NULL)
 TRAIT_ID=@(((_|[:letter:])(_|[:letter:]|[:digit:])*(.(_|[:letter:])(_|[:letter:]|[:digit:])*)*)#)*(_|[:letter:])(_|[:letter:]|[:digit:])*
@@ -88,8 +86,6 @@ TEXT_BLOCK=\"\"\"(\r?\n[ !#-\[\]-}]*)*\"\"\"
 
   {DOC_COMMENT}                { return DOC_COMMENT; }
   {LINE_COMMENT}               { return LINE_COMMENT; }
-  {SPACE}                      { return SPACE; }
-  {NEWLINE}                    { return NEWLINE; }
   {QUOTED_TEXT}                { return QUOTED_TEXT; }
   {NODE_CONSTANTS}             { return NODE_CONSTANTS; }
   {TRAIT_ID}                   { return TRAIT_ID; }
