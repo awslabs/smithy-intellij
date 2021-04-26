@@ -89,7 +89,7 @@ public class SmithySyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey LPAREN =
             createTextAttributesKey("SMITHY_LPAREN", DefaultLanguageHighlighterColors.PARENTHESES);
     public static final TextAttributesKey RPAREN =
-            createTextAttributesKey("SMITHY_RBRACK", DefaultLanguageHighlighterColors.PARENTHESES);
+            createTextAttributesKey("SMITHY_RPAREN", DefaultLanguageHighlighterColors.PARENTHESES);
     public static final TextAttributesKey LINE_COMMENT =
             createTextAttributesKey("SMITHY_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey METADATA =
