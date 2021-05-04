@@ -53,6 +53,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven(url = "https://jitpack.io")
+    maven(url = "https://www.jetbrains.com/intellij-repository/releases")
 }
 dependencies {
     implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
@@ -125,6 +126,8 @@ val generateSmithyParser = task<GenerateParser>("generateSmithyParser") {
     pathToPsiRoot = "/software/amazon/smithy/plugin/language/psi"
     purgeOldFiles = true
 }
+
+tasks.named("compileJava") { dependsOn("generateSmithyLexer", "generateSmithyParser") }
 
 tasks {
     // Set the compatibility versions to 1.8
