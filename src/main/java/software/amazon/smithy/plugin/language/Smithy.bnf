@@ -69,6 +69,7 @@
 
 idl ::= ws version_section ws metadata_section shape_section
 
+// TODO: Expand from only handling the version, to a full control statement section.
 version_section ::= VERSION COLON ws QUOTED_TEXT
 
 metadata_section ::= (metadata_statement)*
@@ -85,26 +86,16 @@ node_array ::= LBRACK ws (node_value ws)* RBRACK
 
 node_object ::= LBRACE ws (node_object_kvp ws)* RBRACE
 
+node_object_key ::= QUOTED_TEXT | IDENTIFIER
+
 node_object_kvp ::= IDENTIFIER ws COLON ws node_value
+
+node_object_shape_statement ::= ws NODE_OBJECT_TYPE_NAME ws IDENTIFIER ws node_object
 
 number ::= [MINUS] INT [FRAC] [EXP]
 
-//node_string_value ::= shape_id | TEXT_BLOCK | quoted_text
 node_string_value ::= shape_id | TEXT_BLOCK | QUOTED_TEXT
-//
-//quoted_text ::= DQUOTE quoted_char* DQUOTE
-//
-//quoted_char ::= QUOTED_CHAR_SUBSET | escaped_char | preserved_double
-//
-//escaped_char ::= ESCAPE (ESCAPE | "'" | DQUOTE | "b" | "f" | "n" | "r" | "t" | "/" | unicode_escape)
-//
-//unicode_escape ::= "u" hex hex hex hex
-//
-//hex ::= digit | "a" | "b" | "c" | "d" | "e" | "f" | "A" | "B" | "C" | "D" | "E" | "F"
-//
-//preserved_double ::= ESCAPE QUOTED_CHAR_SUBSET
-//
-//shape_section ::= [namespace_statement [use_section] [shape_statements]]
+
 shape_section ::= namespace_statement* use_section shape_statements
 
 namespace_statement ::= ws NAMESPACE_KEYWORD ws namespace ws
@@ -130,8 +121,6 @@ shape_member_kvp ::= trait_statements IDENTIFIER ws COLON ws shape_id
 
 complex_shape_statement ::= ws COMPLEX_TYPE_NAME ws IDENTIFIER ws shape_members
 
-node_object_shape_statement ::= ws NODE_OBJECT_TYPE_NAME ws IDENTIFIER ws node_object
-
 trait_statements ::= (ws trait)* ws
 
 trait ::= TRAIT_ID [trait_body]
@@ -143,8 +132,6 @@ trait_body_value ::= trait_structure | node_value
 trait_structure ::= trait_structure_kvp (ws trait_structure_kvp)*
 
 trait_structure_kvp ::= node_object_key ws COLON ws node_value
-
-node_object_key ::= QUOTED_TEXT | IDENTIFIER
 
 apply_statement ::= APPLY ws shape_id ws trait ws
 

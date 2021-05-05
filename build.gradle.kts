@@ -48,16 +48,6 @@ val platformDownloadSources: String by project
 group = pluginGroup
 version = pluginVersion
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-}
-
-//if (JavaVersion.current() != JavaVersion.VERSION_11) {
-//    throw GradleException("The java version used ${JavaVersion.current()} is not the expected version ${JavaVersion.VERSION_11}.")
-//}
-
 // Configure project's dependencies
 repositories {
     mavenCentral()
