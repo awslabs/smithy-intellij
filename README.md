@@ -38,6 +38,12 @@ Change to that directory, and build and publish the locally:
 From this plugin directory, use `ideRun` task to start a sandboxed instance of IntelliJ with the plugin loaded:
 `./gradlew runIde`
 
+## Developing the Lexer and Parser classes
+The classes located at `/src/main/gen` are generated. `SmithyLexer` is generated from the `Smithy.Flex` file via the
+`generateSmithyLexer` Gradle task. `SmithyParser` and its PSI implementation classes are generated from the
+`Smithy.bnf` file via the `generateSmithyParser` Gradle task. The `generateSmithyParser` task requires JDK11 or higher.
+When using JDK11 or higher, both tasks will be run prior to compilation during a standard Gradle build.
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
