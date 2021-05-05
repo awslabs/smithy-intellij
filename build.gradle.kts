@@ -48,6 +48,16 @@ val platformDownloadSources: String by project
 group = pluginGroup
 version = pluginVersion
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
+//if (JavaVersion.current() != JavaVersion.VERSION_11) {
+//    throw GradleException("The java version used ${JavaVersion.current()} is not the expected version ${JavaVersion.VERSION_11}.")
+//}
+
 // Configure project's dependencies
 repositories {
     mavenCentral()
@@ -127,7 +137,11 @@ val generateSmithyParser = task<GenerateParser>("generateSmithyParser") {
     purgeOldFiles = true
 }
 
-tasks.named("compileJava") { dependsOn("generateSmithyLexer", "generateSmithyParser") }
+// The parser generator requires JDK11 or greater. These tasks are run as part of the build only when using an
+// appropriate JDK version.
+if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+    tasks.named("compileJava") { dependsOn("generateSmithyLexer", "generateSmithyParser") }
+}
 
 tasks {
     // Set the compatibility versions to 1.8
