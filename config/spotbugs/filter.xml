@@ -19,20 +19,44 @@
     <Match>
         <Class name="~Test\.java$"/>
     </Match>
+    <!-- Ignore redundant null check in generated PSI files. -->
     <Match>
         <Class name="~software\.amazon\.smithy\.plugin\.language\.psi\.impl.\Smithy.*"/>
         <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
     </Match>
+    <!-- Ignore dead stores in generated Lexer. -->
     <Match>
         <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithyLexer"/>
+        <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
     </Match>
+    <!-- Ignore unread fields in generated Lexer. -->
+    <Match>
+        <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithyLexer"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+    </Match>
+    <!-- Ignore unused fields in generated Lexer. -->
+    <Match>
+        <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithyLexer"/>
+        <Bug pattern="UUF_UNUSED_FIELD"/>
+    </Match>
+    <!-- Ignore non-null return on overridden method. -->
     <Match>
         <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithyParserDefinition"/>
+        <Bug pattern="NP_NONNULL_RETURN_VIOLATION"/>
     </Match>
+    <!-- Ignore redundant null check on overridden method. -->
+    <Match>
+        <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithyParserDefinition"/>
+        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+    </Match>
+    <!-- Ignore non-null return on overridden method. -->
     <Match>
         <Class name="~software\.amazon\.smithy\.plugin\.language\.psi\.SmithyFile"/>
+        <Bug pattern="NP_NONNULL_RETURN_VIOLATION"/>
     </Match>
+    <!-- Ignore non-null return on overridden method. -->
     <Match>
         <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithySyntaxHighlighter"/>
+        <Bug pattern="NP_NONNULL_RETURN_VIOLATION"/>
     </Match>
 </FindBugsFilter>
