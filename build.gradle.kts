@@ -131,6 +131,10 @@ val generateSmithyParser = task<GenerateParser>("generateSmithyParser") {
 // appropriate JDK version.
 if (JavaVersion.current() >= JavaVersion.VERSION_11) {
     tasks.named("compileJava") { dependsOn("generateSmithyLexer", "generateSmithyParser") }
+} else {
+    val javaVersion = JavaVersion.current();
+    logger.warn("JDK11 or later required to generate Lexer and Parser classes. Changes to Smithy grammar files "
+        + "will not be generated using Java $javaVersion.\nSee README regarding developing the Lexer and Parser.");
 }
 
 tasks {
