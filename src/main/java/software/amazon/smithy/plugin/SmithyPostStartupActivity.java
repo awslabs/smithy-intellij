@@ -125,7 +125,8 @@ public class SmithyPostStartupActivity implements StartupActivity {
     // Build server command, using Coursier to launch language server along with any dependencies add by the user.
     private String[] buildServerCommand(List<String> dependencies, Project project) {
         // Add the language server artifact.
-        List<String> artifacts = ListUtils.of(LANGUAGE_SERVER_ARTIFACT);
+        List<String> artifacts = new ArrayList<>();
+        artifacts.add(LANGUAGE_SERVER_ARTIFACT);
         // Add model dependency artifacts.
         artifacts.addAll(dependencies);
         List<String> commandParts = getBaseCommand(project,
