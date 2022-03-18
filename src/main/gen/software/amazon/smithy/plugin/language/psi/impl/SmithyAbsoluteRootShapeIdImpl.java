@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyAbsoluteRootShapeIdImpl extends ASTWrapperPsiElement implements SmithyAbsoluteRootShapeId {
 
-  public SmithyAbsoluteRootShapeIdImpl(ASTNode node) {
+  public SmithyAbsoluteRootShapeIdImpl(@NotNull ASTNode node) {
     super(node);
   }
 
