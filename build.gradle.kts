@@ -26,7 +26,7 @@ plugins {
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "0.6.2"
     id("checkstyle")
-    id("com.github.spotbugs") version "4.7.0"
+    id("com.github.spotbugs") version "5.0.6"
     id("org.jetbrains.grammarkit") version "2021.1.2"
 }
 

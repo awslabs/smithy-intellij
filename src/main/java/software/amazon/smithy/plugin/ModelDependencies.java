@@ -15,6 +15,7 @@
 
 package software.amazon.smithy.plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 import software.amazon.smithy.utils.SmithyBuilder;
 import software.amazon.smithy.utils.ToSmithyBuilder;
@@ -85,7 +86,7 @@ final class ModelDependencies implements ToSmithyBuilder<ModelDependencies> {
          * @return Returns the builder.
          */
         public Builder artifacts(List<String> artifacts) {
-            this.artifacts = artifacts;
+            this.artifacts = new ArrayList<>(artifacts);
             return this;
         }
 
@@ -95,7 +96,7 @@ final class ModelDependencies implements ToSmithyBuilder<ModelDependencies> {
          * @return Returns the builder.
          */
         public Builder repositories(List<String> repositories) {
-            this.repositories = repositories;
+            this.repositories = new ArrayList<>(repositories);
             return this;
         }
     }

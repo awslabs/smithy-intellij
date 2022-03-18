@@ -59,4 +59,8 @@
         <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithySyntaxHighlighter"/>
         <Bug pattern="NP_NONNULL_RETURN_VIOLATION"/>
     </Match>
+    <Match>
+        <Class name="~software\.amazon\.smithy\.plugin\.language\.SmithySyntaxHighlighter"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
 </FindBugsFilter>
