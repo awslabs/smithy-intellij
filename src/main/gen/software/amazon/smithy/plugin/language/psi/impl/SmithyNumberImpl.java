@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyNumberImpl extends ASTWrapperPsiElement implements SmithyNumber {
 
-  public SmithyNumberImpl(ASTNode node) {
+  public SmithyNumberImpl(@NotNull ASTNode node) {
     super(node);
   }
 

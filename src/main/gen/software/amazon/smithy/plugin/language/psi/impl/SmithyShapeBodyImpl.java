@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyShapeBodyImpl extends ASTWrapperPsiElement implements SmithyShapeBody {
 
-  public SmithyShapeBodyImpl(ASTNode node) {
+  public SmithyShapeBodyImpl(@NotNull ASTNode node) {
     super(node);
   }
 

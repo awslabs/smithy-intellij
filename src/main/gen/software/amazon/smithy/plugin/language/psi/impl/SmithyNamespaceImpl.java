@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyNamespaceImpl extends ASTWrapperPsiElement implements SmithyNamespace {
 
-  public SmithyNamespaceImpl(ASTNode node) {
+  public SmithyNamespaceImpl(@NotNull ASTNode node) {
     super(node);
   }
 

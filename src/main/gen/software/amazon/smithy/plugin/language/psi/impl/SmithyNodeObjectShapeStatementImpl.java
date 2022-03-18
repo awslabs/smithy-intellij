@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyNodeObjectShapeStatementImpl extends ASTWrapperPsiElement implements SmithyNodeObjectShapeStatement {
 
-  public SmithyNodeObjectShapeStatementImpl(ASTNode node) {
+  public SmithyNodeObjectShapeStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 

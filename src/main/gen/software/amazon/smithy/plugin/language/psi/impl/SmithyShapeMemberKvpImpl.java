@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyShapeMemberKvpImpl extends ASTWrapperPsiElement implements SmithyShapeMemberKvp {
 
-  public SmithyShapeMemberKvpImpl(ASTNode node) {
+  public SmithyShapeMemberKvpImpl(@NotNull ASTNode node) {
     super(node);
   }
 

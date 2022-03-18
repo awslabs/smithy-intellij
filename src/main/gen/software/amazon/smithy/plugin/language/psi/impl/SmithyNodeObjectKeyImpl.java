@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyNodeObjectKeyImpl extends ASTWrapperPsiElement implements SmithyNodeObjectKey {
 
-  public SmithyNodeObjectKeyImpl(ASTNode node) {
+  public SmithyNodeObjectKeyImpl(@NotNull ASTNode node) {
     super(node);
   }
 

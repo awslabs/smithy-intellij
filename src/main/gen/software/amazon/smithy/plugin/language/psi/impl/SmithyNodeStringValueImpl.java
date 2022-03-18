@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyNodeStringValueImpl extends ASTWrapperPsiElement implements SmithyNodeStringValue {
 
-  public SmithyNodeStringValueImpl(ASTNode node) {
+  public SmithyNodeStringValueImpl(@NotNull ASTNode node) {
     super(node);
   }
 

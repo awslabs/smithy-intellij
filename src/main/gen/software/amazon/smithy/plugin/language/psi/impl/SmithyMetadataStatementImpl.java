@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyMetadataStatementImpl extends ASTWrapperPsiElement implements SmithyMetadataStatement {
 
-  public SmithyMetadataStatementImpl(ASTNode node) {
+  public SmithyMetadataStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 

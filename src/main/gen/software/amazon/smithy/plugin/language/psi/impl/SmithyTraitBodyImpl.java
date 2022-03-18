@@ -28,7 +28,7 @@ import software.amazon.smithy.plugin.language.psi.*;
 
 public class SmithyTraitBodyImpl extends ASTWrapperPsiElement implements SmithyTraitBody {
 
-  public SmithyTraitBodyImpl(ASTNode node) {
+  public SmithyTraitBodyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
