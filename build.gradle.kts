@@ -14,8 +14,6 @@
  */
 
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.grammarkit.tasks.GenerateLexer
-import org.jetbrains.grammarkit.tasks.GenerateParser
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -28,7 +26,7 @@ plugins {
     id("org.jetbrains.changelog") version "1.3.1"
     id("checkstyle")
     id("com.github.spotbugs") version "5.0.6"
-    id("org.jetbrains.grammarkit") version "2021.1.2"
+    id("org.jetbrains.grammarkit") version "2021.2.1"
 }
 
 group = properties("pluginGroup")
@@ -37,6 +35,7 @@ version = properties("pluginVersion")
 // Configure project's dependencies
 repositories {
     mavenCentral()
+    maven(url = "https://jitpack.io")
 }
 dependencies {
     implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
@@ -44,7 +43,6 @@ dependencies {
 }
 
 // Configure gradle-intellij-plugin plugin.
-// Read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
@@ -56,56 +54,9 @@ intellij {
 
 sourceSets["main"].java.srcDirs("src/main/gen")
 
-/*
- * CheckStyle
- * ====================================================
- *
- * Apply CheckStyle to source files but not tests.
- */
-
-tasks["checkstyleTest"].enabled = false
-tasks.checkstyleMain {
-    source = fileTree("src/main/java")
-}
-
-/*
- * Spotbugs
- * ====================================================
- *
- * Run spotbugs against source files and configure suppressions.
- */
-
-// We don't need to lint tests.
-tasks["spotbugsTest"].enabled = false
-tasks.spotbugsMain {
-    excludeFilter.set(project.file("config/spotbugs/filter.xml"))
-}
-
-/*
- * Grammar-Kit
- * ====================================================
- *
- * Apply Grammar-Kit plugin and configure tasks for generating Lexer and Parser classes.
- */
-apply(plugin = "org.jetbrains.grammarkit")
-
 grammarKit {
-    jflexRelease = "1.7.0-1"
-}
-
-val generateSmithyLexer = task<GenerateLexer>("generateSmithyLexer") {
-    source = "src/main/java/software/amazon/smithy/plugin/language/Smithy.flex"
-    targetDir = "src/main/gen/software/amazon/smithy/plugin/language"
-    targetClass = "SmithyLexer"
-    purgeOldFiles = true
-}
-
-val generateSmithyParser = task<GenerateParser>("generateSmithyParser") {
-    source = "src/main/java/software/amazon/smithy/plugin/language/Smithy.bnf"
-    targetRoot = "src/main/gen"
-    pathToParser = "/software/amazon/smithy/plugin/parser/SmithyParser.java"
-    pathToPsiRoot = "/software/amazon/smithy/plugin/language/psi"
-    purgeOldFiles = true
+    jflexRelease.set("1.7.0-1")
+    grammarKitRelease.set("2021.1.2")
 }
 
 tasks {
@@ -115,6 +66,46 @@ tasks {
             sourceCompatibility = it
             targetCompatibility = it
         }
+    }
+
+    // Apply CheckStyle to source files.
+    checkstyleMain {
+        source = fileTree("src/main/java")
+    }
+
+    // Disable CheckStyle on tests.
+    checkstyleTest {
+        enabled.not()
+    }
+
+    //Run spotbugs against source files and configure suppressions.
+    spotbugsMain {
+        excludeFilter.set(project.file("config/spotbugs/filter.xml"))
+    }
+
+    // We don't need to lint tests.
+    spotbugsTest {
+        enabled.not();
+    }
+
+    generateLexer {
+        source.set("src/main/java/software/amazon/smithy/plugin/language/Smithy.flex")
+        targetDir.set("src/main/gen/software/amazon/smithy/plugin/language")
+        targetClass.set("SmithyLexer")
+        purgeOldFiles.set(true)
+    }
+
+    generateParser {
+        source.set("src/main/java/software/amazon/smithy/plugin/language/Smithy.bnf")
+        targetRoot.set("src/main/gen")
+        pathToParser.set("/software/amazon/smithy/plugin/parser/SmithyParser.java")
+        pathToPsiRoot.set("/software/amazon/smithy/plugin/language/psi")
+        purgeOldFiles.set(true)
+    }
+
+    withType<JavaCompile> {
+        dependsOn(generateLexer)
+        dependsOn(generateParser)
     }
 
     wrapper {
