@@ -37,9 +37,6 @@ version = properties("pluginVersion")
 // Configure project's dependencies
 repositories {
     mavenCentral()
-    jcenter()
-    maven(url = "https://jitpack.io")
-    maven(url = "https://www.jetbrains.com/intellij-repository/releases")
 }
 dependencies {
     implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
@@ -111,21 +108,17 @@ val generateSmithyParser = task<GenerateParser>("generateSmithyParser") {
     purgeOldFiles = true
 }
 
-// The parser generator requires JDK11 or greater. These tasks are run as part of the build only when using an
-// appropriate JDK version.
-if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-    tasks.named("compileJava") { dependsOn("generateSmithyLexer", "generateSmithyParser") }
-} else {
-    val javaVersion = JavaVersion.current();
-    logger.warn("JDK11 or later required to generate Lexer and Parser classes. Changes to Smithy grammar files "
-        + "will not be generated using Java $javaVersion.\nSee README regarding developing the Lexer and Parser.");
-}
-
 tasks {
-    // Set the compatibility versions to 1.8
-    withType<JavaCompile> {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
+    // Set the JVM compatibility versions
+    properties("javaVersion").let {
+        withType<JavaCompile> {
+            sourceCompatibility = it
+            targetCompatibility = it
+        }
+    }
+
+    wrapper {
+        gradleVersion = properties("gradleVersion")
     }
 
     patchPluginXml {
