@@ -38,7 +38,7 @@ repositories {
     maven(url = "https://jitpack.io")
 }
 dependencies {
-    implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
+    implementation("com.github.ballerina-platform:lsp4intellij:0.95.0")
     implementation("software.amazon.smithy:smithy-model:[1.0, 2.0[")
 }
 
