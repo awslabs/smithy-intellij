@@ -1,0 +1,22 @@
+version: 2
+
+updates:
+  # Gradle plugins, JVM dependencies, and the Gradle wrapper. smithy-model is
+  # declared as a dynamic range ("[1.0, 2.0["), which Dependabot cannot parse,
+  # so it keeps resolving at build time instead of arriving as a bump PR.
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "10:00"
+      timezone: "Etc/UTC"
+
+  # Actions referenced by .github/workflows.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "10:00"
+      timezone: "Etc/UTC"

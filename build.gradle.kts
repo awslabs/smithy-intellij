@@ -21,11 +21,11 @@ plugins {
     // Java support
     id("java")
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.4.0"
+    id("org.jetbrains.intellij") version "1.17.4"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "1.3.1"
     id("checkstyle")
-    id("com.github.spotbugs") version "5.0.6"
+    id("com.github.spotbugs") version "6.5.12"
     id("org.jetbrains.grammarkit") version "2021.2.1"
 }
 
@@ -38,7 +38,7 @@ repositories {
     maven(url = "https://jitpack.io")
 }
 dependencies {
-    implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
+    implementation("com.github.ballerina-platform:lsp4intellij:0.95.0")
     implementation("software.amazon.smithy:smithy-model:[1.0, 2.0[")
 }
 
@@ -106,10 +106,6 @@ tasks {
     withType<JavaCompile> {
         dependsOn(generateLexer)
         dependsOn(generateParser)
-    }
-
-    wrapper {
-        gradleVersion = properties("gradleVersion")
     }
 
     patchPluginXml {
